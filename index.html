@@ -1,7 +1,20 @@
 <html>
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='js/util.js'></script>
-<body onload='read_chart_data()'>
+<body>
   <p>Hello World</p>
+<script>
+// uncomment this to see what events we can register
+// callbacks for.
+//console.log(this);
+
+const cdata_prom = read_chart_data();
+const rdata_prom = read_record_data();
+
+log_promise_data(cdata_prom);
+log_promise_data(rdata_prom);
+
+
+</script>
 </body>
 </html>
