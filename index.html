@@ -1,8 +1,9 @@
 <html>
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='js/util.js'></script>
+<style> circle {fill: lightblue; stroke: black;} </style>
 <body>
-  <p>Hello World</p>
+<svg width=600 height=600></svg>
 <script>
 /******************************
   CTRL-SHIFT-R to force reload
@@ -15,8 +16,12 @@
 const cdata_prom = read_chart_data();
 const rdata_prom = read_record_data();
 
-log_promise_data(cdata_prom);
-log_promise_data(rdata_prom);
+//log_promise_data(cdata_prom);
+//log_promise_data(rdata_prom);
+
+//make_scatterplot(cdata_prom, "magNst", "mag", "magError", 100, 100, 600, 600, true, true, 1.0, 10.0);
+//make_scatterplot(cdata_prom, "dmin", "depth", "depthError", 100, 100, 600, 600, false, true, 111.2, .2);
+make_scatterplot(cdata_prom, "nst", "nst", "rms", 0, 50, 1000, 1000, false, true, 1.0, .1);
 
 </script>
 </body>
