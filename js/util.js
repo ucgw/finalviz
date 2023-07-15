@@ -125,9 +125,21 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, xform_xrange
         let yaxlower = Math.floor(Math.min(...cy)) - 1;
         let yaxupper = Math.floor(Math.max(...cy)) + 1;
 
-        //var raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
-        //var raderr_sized = scatterplot_magerror_calc(cx, cy, errmultiplier);
-        var raderr_sized = scatterplot_nstrms_calc(cx, cy, errmultiplier);
+        var raderr_sized = [];
+
+        switch (cyfield) {
+          case "magError":
+            raderr_sized = scatterplot_magerror_calc(cx, cy, errmultiplier);
+            break;
+
+          case "depthError":
+            raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
+            break;
+
+          case "rms":
+            raderr_sized = scatterplot_nstrms_calc(cx, cy, errmultiplier);
+            break;
+        }
 
         let scatter = d3_svg_select_data_enter(cx, canvas_width, canvas_height, xform_xrange, xform_yrange, "circle");
 
