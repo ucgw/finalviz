@@ -6,66 +6,6 @@ async function read_record_data() {
   return await d3.csv("https://ucgw.github.io/data/mag6plus_records.csv");
 }
 
-// a quick debug function for the csv data
-// read in
-function log_promise_data(promise_data) {
-  promise_data
-    .then(function(data) { console.log(data); });
-}
-
-function d3_svg_select_data_enter(data, width, height, xform_xrange, xform_yrange, shape) {
-  var svg = d3.select("svg")
-              .attr("width", width)
-              .attr("height", height);
-
-  var chart = svg.append("g")
-              .attr("transform", "translate("+xform_xrange+","+xform_yrange+")")
-              .selectAll(shape)
-              .data(data)
-              .enter();
-
-  return { svg, chart };
-}
-
-function d3_append_circles(chart, cx, cxdom, cxrange, cy, cydom,cyrange, r, rrange) {
-  let cxln = d3.scaleLog()
-               .base(10)
-               .domain(cxdom)
-               .range(cxrange);
-  let cyln = d3.scaleLinear()
-               .domain(cydom)
-               .range(cyrange);
-  let rln = d3.scaleLinear()
-              .domain(r)
-              .range(rrange);
-
-  chart.append("circle")
-       .attr("cx", function(d,i) { return cxln(cx[i]); })
-       .attr("cy", function(d,i) { return cy[i]; })
-       .attr("r", function(d,i) { return r[i]; })
-}
-
-function d3_append_axis(svg, axistype, xform_xrange, xform_yrange, xd, xr, xt, tformat) {
-  let ax = d3.scaleLog()
-             .base(10)
-             .domain(xd)
-             .range(xr);
-
-  let axis = axistype().scale(ax);
-
-  axis.tickValues(xt);
-  axis.tickFormat(d3.format(tformat));
-
-  let axis_g = svg.append("g")
-         .attr("transform", "translate("+xform_xrange+","+xform_yrange+")")
-         .attr("fill", "none")
-         .attr("font-size", "12")
-         .attr("font-family", "sans-serif")
-         .attr("text-anchor", "middle");
-
-  axis_g.call(axis);
-}
-
 function percentage_diff_calc(x, y, scale) {
   let x_sized = [];
   let multiplier = 1.0;
@@ -120,18 +60,24 @@ function sum_dp_square_calc(x, y, scale) {
 }
 
 function scatterplot_deptherror_calc(x, y, scale) {
-  return percentage_diff_calc(x, y, scale);
+  let calc = percentage_diff_calc(x, y, scale);
+
+  return calc.map(x => x / 100);
 }
 
 function scatterplot_magerror_calc(x, y, scale) {
   return percentage_diff_calc(x, y, scale);
 }
 
+function scatterplot_horizontalerror_calc(x, y, scale) {
+  return scatterplot_deptherror_calc(x, y, scale);
+}
+
 function scatterplot_nstrms_calc(x, y, scale) {
   return sum_dp_square_calc(x, y, scale);
 }
 
-function axis_ticks_calc(xd, numticks) {
+function axis_mag_ticks_calc(xd, numticks) {
   let unique = xd.filter((x, i) => {
                  return xd.indexOf(x) === i;
                });
@@ -145,52 +91,33 @@ function axis_ticks_calc(xd, numticks) {
   return ticks;
 }
 
-function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, xform_xrange, xform_yrange, canvas_width, canvas_height, downsize, logscale, yaxmultiplier, errmultiplier) {
-  promise_data
-    .then(
-      function(data) {
-        const cx = data.map(a => Number(a[cxfield]));
-        const cy = data.map(a => Number(a[cyfield]));
-        const yax = data.map(a => Number(a[yaxfield]) * parseFloat(yaxmultiplier));
+function axis_depth_ticks_calc(xd, tickgap) {
+  let xd_min = Math.min(...xd); 
+  let xd_max = Math.max(...xd);
 
-        console.log(cx);
-        console.log(cy);
-        console.log(yax);
+  let tickgap_multiplier = 0;
+  let tick_lower = xd_min - tickgap;
+  let tick_upper = xd_max % tickgap;
 
-        let cxlower = Math.floor(Math.min(...cx)) - 1;
-        let cxupper = Math.ceil(Math.max(...cx)) + 1;
-        let yaxlower = Math.floor(Math.min(...cy)) - 1;
-        let yaxupper = Math.floor(Math.max(...cy)) + 1;
+  while (tick_lower > tickgap) {
+    tick_lower = tick_lower - tickgap;
+    tickgap_multiplier++;
+  }
+  xd_min = tickgap * tickgap_multiplier;
 
-        var raderr_sized = [];
-        var xa_domain = [];
-        var ya_domain = [];
-        var xa_range = [];
-        var ya_range = [];
-        var xa_ticks = [];
-        var ya_ticks = [];
+  while (tick_upper != 0) {
+    xd_max = xd_max + 1;
+    tick_upper = xd_max % tickgap;
+  }
 
-        switch (cyfield) {
-          case "magError":
-            raderr_sized = scatterplot_magerror_calc(cx, cy, errmultiplier);
-            xa_ticks = axis_ticks_calc(cx, 3);
-            xa_domain = [Math.min(...cx), Math.max(...cx)];
-            break;
+  console.log("min x-axis: "+xd_min);
+  console.log("max x-axis: "+xd_max);
 
-          case "depthError":
-            raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
-            break;
+  ticks = [];
 
-          case "rms":
-            raderr_sized = scatterplot_nstrms_calc(cx, cy, errmultiplier);
-            break;
-        }
+  for (; xd_min < xd_max; xd_min += tickgap) {
+    ticks.push(xd_min);
+  }
 
-        let scatter = d3_svg_select_data_enter(cx, canvas_width, canvas_height, xform_xrange, xform_yrange, "circle");
-
-        d3_append_circles(scatter.chart, cx, [cxlower, cxupper], [0, canvas_height], yax, [yaxupper, yaxlower],[0, canvas_height], raderr_sized, [0, canvas_height]);
-
-        d3_append_axis(scatter.svg, d3.axisBottom, 50, 300, xa_domain, [0, canvas_height], xa_ticks, '~s');
-
-    });
+  return ticks;
 }
