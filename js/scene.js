@@ -48,6 +48,7 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale) {
 
 function d3_append_axis_label(svg, axis, xdim, ydim, text) {
   if (axis === "x") {
+    console.log("x-axis label dims: "+xdim+" "+ydim);
     svg.append("text")
        .attr("class", "x label")
        .attr("text-anchor", "middle")
@@ -55,7 +56,9 @@ function d3_append_axis_label(svg, axis, xdim, ydim, text) {
        .attr("y", ydim)
        .text(text);
   } else if (axis === "y") {
+    console.log("y-axis label dims: "+xdim+" "+ydim);
     svg.append("text")
+       .attr("transform", "rotate(-90)")
        .attr("class", "y label")
        .attr("text-anchor", "middle")
        .attr("x", xdim)
@@ -73,7 +76,7 @@ function d3_append_axis(svg, atype, ascale, width, height, xt, tformat) {
   let axis_g = svg.append("g")
          .attr("transform", "translate("+width+","+height+")")
          .attr("fill", "none")
-         .attr("font-size", "18")
+         .attr("font-size", "20")
          .attr("font-family", "sans-serif")
          .attr("text-anchor", "middle");
 

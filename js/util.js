@@ -75,7 +75,7 @@ function scatterplot_nstrms_calc(x, y, scale) {
   return sum_dp_square_calc(x, y, scale);
 }
 
-function axis_mag_ticks_calc(xd, numticks) {
+function axis_ticks_num_calc(xd, numticks) {
   let unique = xd.filter((x, i) => {
                  return xd.indexOf(x) === i;
                });
@@ -89,7 +89,7 @@ function axis_mag_ticks_calc(xd, numticks) {
   return ticks;
 }
 
-function axis_depth_ticks_calc(xd, tickgap) {
+function axis_ticks_gap_calc(xd, tickgap) {
   let xd_min = Math.min(...xd); 
   let xd_max = Math.max(...xd);
 

@@ -17,17 +17,22 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
           case "magError":
             raderr_sized = scatterplot_magerror_calc(cx, cy, errmultiplier);
             scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
-            xa_ticks = axis_mag_ticks_calc(cx, xa_numticks);
+            xa_ticks = axis_ticks_num_calc(cx, xa_numticks);
+            ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap);
 
             d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
 
             d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Magnitude');
+
+            d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
+
+            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Seismic Stations)');
             break;
 
           case "depthError":
             raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
             scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
-            xa_ticks = axis_depth_ticks_calc(cx, xa_tickgap);
+            xa_ticks = axis_ticks_gap_calc(cx, xa_tickgap);
 
             d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
 
