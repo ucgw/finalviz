@@ -1,4 +1,4 @@
-function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, xform_xrange, xform_yrange, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
+function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
   promise_data
     .then(
       function(data) {
@@ -26,19 +26,22 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, xform_xrange
 
           case "depthError":
             raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
+            scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
             xa_ticks = axis_depth_ticks_calc(cx, xa_tickgap);
 
-            d3_append_axis(scatter.svg, d3.axisBottom, xform_xrange, canvas_height-(xform_yrange-50), [cxlower, cxupper], [0, canvas_height], xa_ticks, '~s');
+            d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
 
-            d3_append_axis_label(scatter.svg, 'x', xform_xrange+150, xform_yrange+xform_xrange, 590, 'Earthquake Depth (in km.)');
+            d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Depth  (in km.)');
             break;
 
           case "horizontalError":
             raderr_sized = scatterplot_horizontalerror_calc(cx, cy, errmultiplier);
-
+            scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
             xa_ticks = axis_depth_ticks_calc(cx, xa_tickgap);
 
-            d3_append_axis(scatter.svg, d3.axisBottom, xform_xrange, canvas_height-(xform_yrange-50), [cxlower, cxupper], [0, canvas_height], xa_ticks, '~s');
+            d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
+
+            d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Azimuthal Station Gap  (in degrees)');
             break;
           /*
           case "rms":

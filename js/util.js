@@ -60,9 +60,7 @@ function sum_dp_square_calc(x, y, scale) {
 }
 
 function scatterplot_deptherror_calc(x, y, scale) {
-  let calc = percentage_diff_calc(x, y, scale);
-
-  return calc.map(x => x / 100);
+  return percentage_diff_calc(x, y, scale);
 }
 
 function scatterplot_magerror_calc(x, y, scale) {
