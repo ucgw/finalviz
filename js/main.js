@@ -26,33 +26,38 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
 
             d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
 
-            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Seismic Stations)');
+            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Seismic Stations Measuring Magnitude)');
             break;
 
           case "depthError":
             raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
             scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
-            xa_ticks = axis_ticks_gap_calc(cx, xa_tickgap);
+            xa_ticks = axis_ticks_gap_calc(cx, xa_numticks);
+            ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap)
 
             d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
 
-            d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Depth  (in km.)');
+            d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Depth  (in km <100km)');
+
+            d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
+
+            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'NST (# Seismic Stations Measuring Location)');
             break;
 
           case "horizontalError":
             raderr_sized = scatterplot_horizontalerror_calc(cx, cy, errmultiplier);
             scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
-            xa_ticks = axis_depth_ticks_calc(cx, xa_tickgap);
+            xa_ticks = axis_ticks_gap_calc(cx, xa_tickgap);
+            ya_ticks = axis_ticks_gap_calc(yax, xa_numticks)
 
             d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
 
             d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Azimuthal Station Gap  (in degrees)');
+
+            d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
+
+            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'NST (# Seismic Stations Measuring Location)');
             break;
-          /*
-          case "rms":
-            raderr_sized = scatterplot_nstrms_calc(cx, cy, errmultiplier);
-            break;
-          */
         }
 
         d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale);
