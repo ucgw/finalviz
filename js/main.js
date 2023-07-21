@@ -16,7 +16,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
         switch (cyfield) {
           case "magError":
             raderr_sized = scatterplot_magerror_calc(cx, cy, errmultiplier);
-            scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
+            scatter = d3_svg_select_data_enter(cyfield, cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
             xa_ticks = axis_ticks_num_calc(cx, xa_numticks);
             ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap);
 
@@ -31,7 +31,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
 
           case "depthError":
             raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
-            scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
+            scatter = d3_svg_select_data_enter(cyfield, cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
             xa_ticks = axis_ticks_gap_calc(cx, xa_numticks);
             ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap)
 
@@ -46,7 +46,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
 
           case "horizontalError":
             raderr_sized = scatterplot_horizontalerror_calc(cx, cy, errmultiplier);
-            scatter = d3_svg_select_data_enter(cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
+            scatter = d3_svg_select_data_enter(cyfield, cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
             xa_ticks = axis_ticks_gap_calc(cx, xa_tickgap);
             ya_ticks = axis_ticks_gap_calc(yax, xa_numticks)
 

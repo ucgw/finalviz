@@ -23,7 +23,7 @@ var color_scheme = ["#9e0142","#a00343","#a20643","#a40844","#a70b44","#a90d45",
   return color_map;
 }
 
-function d3_svg_select_data_enter(xdata, ydata, rdata, width, height, shape) {
+function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape) {
   var margin = { left: 100, bottom: 100, top: 100, right: 100, label: 50 };
   var mwidth = width - margin.left - margin.right;
   var mheight = height - margin.bottom - margin.top;
@@ -35,7 +35,7 @@ function d3_svg_select_data_enter(xdata, ydata, rdata, width, height, shape) {
   let rlower = Math.floor(Math.min(...rdata)) - 1;
   let rupper = Math.ceil(Math.max(...rdata)) + 1;
 
-  var svg = d3.select("svg")
+  var svg = d3.select("#"+id)
               .attr("width", (width + margin.left + margin.right))
               .attr("height", (height + margin.bottom + margin.top));
 
