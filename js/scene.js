@@ -57,8 +57,8 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
 
   // colorize based on scaled rdata (error data)
   // darker color => greater error
-  var color = colorize(color_rscale);
-  console.log("color: "+color);
+  var color_map = colorize(color_rscale);
+  console.log("color: "+color_map);
 
   var chart = svg.append("g")
               .attr("transform", "translate("+margin.left+","+margin.top+")")
@@ -66,7 +66,7 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
               .data(xdata)
               .enter();
 
-  return { svg, xscale, yscale, rscale, margin, chart, color };
+  return { svg, xscale, yscale, rscale, margin, chart, color_map };
 }
 
 function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color) {
@@ -115,4 +115,8 @@ function d3_append_axis(svg, atype, ascale, width, height, xt, tformat) {
          .attr("text-anchor", "middle");
 
   axis_g.call(axis);
+}
+
+function d3_svg_append_legend(svg, data, color_map) {
+  let color_slice = data.slice(0, data.length);
 }

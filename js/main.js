@@ -60,6 +60,6 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             break;
         }
 
-        d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale, scatter.color);
+        d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale, scatter.color_map);
     });
 }
