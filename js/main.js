@@ -17,29 +17,17 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
         var cx = [];
         var cy = []
         var yax = [];
+        var tooltip_callback = {};
 
         switch (cyfield) {
           case "magError":
-            /*
-            scatter = d3_svg_select_data_enter(cyfield, cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
-            xa_ticks = axis_ticks_num_calc(cx, xa_numticks);
-            ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap);
-
-            d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
-
-            d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Magnitude');
-
-            d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
-
-            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Stations Measuring Magnitude)');
-
-            */
             var d3obj = d3_svg_magError_setup(cyfield, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
 
             scatter = d3obj.scatter;
             raderr_sized = d3obj.raderr_sized;
             cx = d3obj.cx;
             yax = d3obj.yax;
+            tooltip_callback = d3_html_tooltip_magError;
 
             d3_append_magError_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
             break;
@@ -75,6 +63,6 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             break;
         }
 
-        d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale, scatter.color_map, data);
+        d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale, scatter.color_map, data, tooltip_callback);
     });
 }

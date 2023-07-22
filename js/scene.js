@@ -73,7 +73,11 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
   return { svg, xscale, yscale, rscale, margin, chart, color_map };
 }
 
-function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data) {
+function d3_html_tooltip_magError(datarec) {
+  return "Mag: "+datarec.mag+"<br>"+"MagError: "+datarec.magError+"<br>"+"MagNst: "+datarec.magNst+"<br>"+"Date: "+datarec.time.replace(/Z/gm, "").replace(/T/gm, " ").replace(/\.\d+$/gm, " (UTC)")+"<br>"+"Location: "+datarec.place;
+}
+
+function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data, tooltip_callback) {
 
   var tooltip = d3.select("body")
                   .append("div")
@@ -91,8 +95,10 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
                     .style("left",(d3.event.pageX+15)+"px")
                     .style("top",(d3.event.pageY-100)+"px")
                     .html(
+                      tooltip_callback(data[i])
+                     // DEBUG
                      //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place+"<br>"+"cx: "+this.attributes.cx.value+"<br>"+"cy: "+this.attributes.cy.value
-                     "Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Date: "+data[i].time.replace(/Z/gm, "").replace(/T/gm, " ").replace(/\.\d+$/gm, " (UTC)")+"<br>"+"Location: "+data[i].place
+                     //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Date: "+data[i].time.replace(/Z/gm, "").replace(/T/gm, " ").replace(/\.\d+$/gm, " (UTC)")+"<br>"+"Location: "+data[i].place
                     )
              })
        .on("mouseout", function(d,i) {
@@ -195,7 +201,7 @@ function d3_append_magError_return_annotation(scatter, data, yaxfield, cxfield, 
 
              d3_append_magError_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
 
-             d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, data);
+             d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, data, d3_html_tooltip_magError);
              });
 
   scatter.svg.append("g")
@@ -262,7 +268,7 @@ const makeAnnotations = d3.annotation()
        var d3obj = d3_svg_magError_setup("expandView", cdata, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
        d3_append_magError_return_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
 
-       d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, cdata);
+       d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, cdata, d3_html_tooltip_magError);
        });
 
 scatter.svg.append("g")
