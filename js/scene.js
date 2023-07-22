@@ -35,6 +35,9 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
   let rlower = Math.floor(Math.min(...rdata)) - 1;
   let rupper = Math.ceil(Math.max(...rdata)) + 1;
 
+  console.log("cx range: ["+cxlower+", "+cxupper+"]");
+  console.log("cx range: ["+cxlower+", "+cxupper+"]");
+
   var svg = d3.select("#"+id)
               .attr("style", "background-color:#dadada")
               .attr("width", (width + margin.left + margin.right))
@@ -81,6 +84,7 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
        .attr("cx", function(d,i) { return xscale(cx[i]); })
        .attr("cy", function(d,i) { return yscale(cy[i]); })
        .attr("r", function(d,i) { return rscale(r[i]); })
+       .attr("class", function(d,i) { return "circle"+i; })
        .style("opacity", 0.7)
        .style("fill", function(d,i) { return color[i]; })
        .on("mouseover", function(d,i) {
@@ -88,6 +92,7 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
                     .style("left",(d3.event.pageX+15)+"px")
                     .style("top",(d3.event.pageY-100)+"px")
                     .html(
+                     //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place+"<br>"+"cx: "+this.attributes.cx.value+"<br>"+"cy: "+this.attributes.cy.value
                      "Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place
                     )
              })
@@ -138,16 +143,12 @@ function d3_append_axis(svg, atype, ascale, width, height, xt, tformat) {
   axis_g.call(axis);
 }
 
-function d3_append_magError_annotation(svg) {
-  /****
-   * Annotation specific for the magError scene
-   * with static data
-   ****/
-  const annotations = [
+function d3_magError_annotation_gen(title, label) {
+return [
   {
     note: {
-      label: "A clustering of high error events at lower magnitude / lower number of recording stations",
-      title: "High Error Region (Low Magnitude Events)",
+      label: label,
+      title: title,
       align: "right",
       lineType: "horizontal"
     },
@@ -167,6 +168,45 @@ function d3_append_magError_annotation(svg) {
     dx: -110
   }
 ]
+}
+
+
+function d3_append_magError_return_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
+  let title = "Click Here to Go Back";
+  let label = "";
+
+  var annotations = d3_magError_annotation_gen(title, label);
+
+  const makeAnnotations = d3.annotation()
+        .annotations(annotations)
+        .disable(["subject", "connector"])
+        .on("noteclick", function(a) {
+             // clear expandView svg to revert back to
+             // original view
+             scatter.svg.remove();
+
+             var d3obj = d3_svg_magError_setup("magError", data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+             d3_append_magError_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+             d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, data);
+             });
+
+  scatter.svg.append("g")
+     .call(makeAnnotations);
+}
+  
+
+function d3_append_magError_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
+  /****
+   * Annotation specific for the magError scene
+   * with static data
+   ****/
+
+let title = "High Error Region (Low Magnitude Events)";
+let label = "A clustering of high error events at lower magnitude / lower number of recording stations";
+
+const annotations = d3_magError_annotation_gen(title, label);
 
 const makeAnnotations = d3.annotation()
   .annotations(annotations)
@@ -178,9 +218,48 @@ const makeAnnotations = d3.annotation()
   .on("subjectout", function(a) {
        this.selectAll("text.clickhelp")
            .remove();
+       })
+  .on("subjectclick", function(a) {
+       var cdata = [];
+       let enclosed_x = a._x;
+       let enclosed_y = a._y;
+       //console.log(a);
+       //console.log("==========");
+       //console.log(scatter.svg.selectAll("circle"));
+       
+       let circles = scatter.svg.selectAll("circle")._groups[0];
+
+       console.log(scatter.svg);
+       
+       // anything less than or equal to _y AND
+       // anything less than or equal to _x
+       // we target for expansion view
+       for (let i = 0; i < circles.length; i++) {
+           let curr_cx = circles[i].attributes.cx.value;
+           let curr_cy = circles[i].attributes.cy.value;
+
+           if (curr_cx <= enclosed_x && curr_cy <= enclosed_y) {
+               console.log("cx: "+curr_cx+"  cy: "+curr_cy + "  MagError: "+data[i].magError+"  Mag: "+data[i].mag);
+               cdata.push(data[i]);
+           } else {
+               // DO NOT USE FOR NOW
+               //scatter.svg.select(".circle"+i).remove();
+           }
+       }
+
+       console.log(cdata.length);
+
+       // clear main magError scene to "expand"
+       // the d3 annotation subject section data points
+       scatter.svg.remove();
+
+       var d3obj = d3_svg_magError_setup("expandView", cdata, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+       d3_append_magError_return_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+       d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, cdata);
        });
 
-svg.append("g")
+scatter.svg.append("g")
    .call(makeAnnotations);
 }
 

@@ -2,6 +2,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
   promise_data
     .then(
       function(data) {
+        /*
         const cx = data.map(a => Number(a[cxfield]));
         const cy = data.map(a => Number(a[cyfield]));
         const yax = data.map(a => Number(a[yaxfield]) * parseFloat(yaxmultiplier));
@@ -9,13 +10,17 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
         console.log(cx);
         console.log(cy);
         console.log(yax);
+        */
 
         var raderr_sized = [];
         var scatter = {};
+        var cx = [];
+        var cy = []
+        var yax = [];
 
         switch (cyfield) {
           case "magError":
-            raderr_sized = scatterplot_magerror_calc(cx, cy, errmultiplier);
+            /*
             scatter = d3_svg_select_data_enter(cyfield, cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
             xa_ticks = axis_ticks_num_calc(cx, xa_numticks);
             ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap);
@@ -28,7 +33,15 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
 
             d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Stations Measuring Magnitude)');
 
-            d3_append_magError_annotation(scatter.svg);
+            */
+            var d3obj = d3_svg_magError_setup(cyfield, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+            scatter = d3obj.scatter;
+            raderr_sized = d3obj.raderr_sized;
+            cx = d3obj.cx;
+            yax = d3obj.yax;
+
+            d3_append_magError_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
             break;
 
           case "depthError":

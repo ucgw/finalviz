@@ -119,3 +119,30 @@ function axis_ticks_gap_calc(xd, tickgap) {
 
   return ticks;
 }
+
+function d3_svg_magError_setup(svgid, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
+
+  d3.select("svg#"+svgid).remove();
+  d3.select("body").insert("svg")
+                   .attr("id", svgid)
+                   .attr("transform", "translate(-5,-165)")
+
+  var cx = data.map(a => Number(a[cxfield]));
+  var cy = data.map(a => Number(a[cyfield])); 
+  var yax = data.map(a => Number(a[yaxfield]) * parseFloat(yaxmultiplier));
+
+  var raderr_sized = scatterplot_magerror_calc(cx, cy, errmultiplier);
+  var scatter = d3_svg_select_data_enter(svgid, cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
+  var xa_ticks = axis_ticks_num_calc(cx, xa_numticks);
+  var ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap);
+
+  d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
+
+  d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Magnitude');
+
+  d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
+
+  d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Stations Measuring Magnitude)');
+
+  return { scatter, raderr_sized, cx, yax };
+}
