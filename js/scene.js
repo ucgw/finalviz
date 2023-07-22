@@ -77,6 +77,11 @@ function d3_html_tooltip_magError(datarec) {
   return "Mag: "+datarec.mag+"<br>"+"MagError: "+datarec.magError+"<br>"+"MagNst: "+datarec.magNst+"<br>"+"Date: "+datarec.time.replace(/Z/gm, "").replace(/T/gm, " ").replace(/\.\d+$/gm, " (UTC)")+"<br>"+"Location: "+datarec.place;
 }
 
+function d3_html_tooltip_cx_cy_debug(elem, datarec, tooltip_callback) {
+  var html = tooltip_callback(datarec);
+  return html+"<br>"+"cx: "+elem.attributes.cx.value+"<br>"+"cy: "+elem.attributes.cy.value;
+}
+
 function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data, tooltip_callback) {
 
   var tooltip = d3.select("body")
@@ -95,10 +100,9 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
                     .style("left",(d3.event.pageX+15)+"px")
                     .style("top",(d3.event.pageY-100)+"px")
                     .html(
+                      // DEBUG
+                      //d3_html_tooltip_cx_cy_debug(this, data[i], tooltip_callback)
                       tooltip_callback(data[i])
-                     // DEBUG
-                     //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place+"<br>"+"cx: "+this.attributes.cx.value+"<br>"+"cy: "+this.attributes.cy.value
-                     //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Date: "+data[i].time.replace(/Z/gm, "").replace(/T/gm, " ").replace(/\.\d+$/gm, " (UTC)")+"<br>"+"Location: "+data[i].place
                     )
              })
        .on("mouseout", function(d,i) {
