@@ -36,7 +36,7 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
   let rupper = Math.ceil(Math.max(...rdata)) + 1;
 
   var svg = d3.select("#"+id)
-              .attr("style", "background-color:#b0b0b0")
+              .attr("style", "background-color:#cfcfcf")
               .attr("width", (width + margin.left + margin.right))
               .attr("height", (height + margin.bottom + margin.top));
 
