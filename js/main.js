@@ -27,6 +27,8 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
 
             d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Seismic Stations Measuring Magnitude)');
+
+            d3_append_magError_annotation(scatter.svg);
             break;
 
           case "depthError":
@@ -60,6 +62,6 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             break;
         }
 
-        d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale, scatter.color_map);
+        d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale, scatter.color_map, data);
     });
 }

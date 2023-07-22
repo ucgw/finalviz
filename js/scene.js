@@ -36,6 +36,7 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
   let rupper = Math.ceil(Math.max(...rdata)) + 1;
 
   var svg = d3.select("#"+id)
+              .attr("style", "background-color:#b0b0b0")
               .attr("width", (width + margin.left + margin.right))
               .attr("height", (height + margin.bottom + margin.top));
 
@@ -51,7 +52,7 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
   var rscale = d3.scaleLog()
                  .base(10)
                  .domain([rlower, rupper])
-                 .range([0, 18])
+                 .range([0, 18]);
 
   let color_rscale = rdata.map(a => rscale(a));
 
@@ -69,15 +70,31 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
   return { svg, xscale, yscale, rscale, margin, chart, color_map };
 }
 
-function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color) {
+function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data) {
+
+  var tooltip = d3.select("body")
+                  .append("div")
+                  .attr("class", "tooltip")
+                  .style("opacity", 0);
+
   chart.append("circle")
        .attr("cx", function(d,i) { return xscale(cx[i]); })
        .attr("cy", function(d,i) { return yscale(cy[i]); })
        .attr("r", function(d,i) { return rscale(r[i]); })
        .style("opacity", 0.7)
        .style("fill", function(d,i) { return color[i]; })
-       //.on("mouseover", showTooltip)
-       //.on("mouseout", removeTooltip);
+       .on("mouseover", function(d,i) {
+             tooltip.style("opacity", .7)
+                    .style("left",(d3.event.pageX+15)+"px")
+                    .style("top",(d3.event.pageY-100)+"px")
+                    .html(
+                     //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst
+                     "Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place
+                    )
+             })
+       .on("mouseout", function(d,i) {
+             tooltip.style("opacity", 0);
+             });
 }
 
 function d3_append_axis_label(svg, axis, xdim, ydim, text) {
@@ -86,8 +103,10 @@ function d3_append_axis_label(svg, axis, xdim, ydim, text) {
     svg.append("text")
        .attr("class", "x label")
        .attr("text-anchor", "middle")
+       .attr("fill", "#010005")
        .attr("x", xdim)
        .attr("y", ydim)
+       .attr("font-weight", 600) // bold text
        .text(text);
   } else if (axis === "y") {
     console.log("y-axis label dims: "+xdim+" "+ydim);
@@ -95,8 +114,10 @@ function d3_append_axis_label(svg, axis, xdim, ydim, text) {
        .attr("transform", "rotate(-90)")
        .attr("class", "y label")
        .attr("text-anchor", "middle")
+       .attr("fill", "#010005")
        .attr("x", xdim)
        .attr("y", ydim)
+       .attr("font-weight", 600) // bold text
        .text(text);
   }
 }
@@ -111,12 +132,51 @@ function d3_append_axis(svg, atype, ascale, width, height, xt, tformat) {
          .attr("transform", "translate("+width+","+height+")")
          .attr("fill", "none")
          .attr("font-size", "20")
+         .attr("font-weight", 600) // bold text
          .attr("font-family", "sans-serif")
          .attr("text-anchor", "middle");
 
   axis_g.call(axis);
 }
 
+function d3_append_magError_annotation(svg) {
+  /****
+   * Annotation specific for the magError scene
+   * with static data
+   ****/
+  const annotations = [
+  {
+    note: {
+      label: "A clustering of high error events at lower magnitude / lower number of recording stations",
+      title: "High Error Region (Low Magnitude Events)",
+      align: "right",
+      lineType: "horizontal"
+    },
+    type: d3.annotationCalloutCircle,
+    subject: {
+      radius: 110,
+      radiusPadding: 5
+    },
+    connector: {
+      //end: "arrow",
+      //endScale: 2
+    },
+    color: ["#010005"],
+    x: 370,
+    y: 190,
+    dy: 90,
+    dx: -110
+  }
+]
+
+const makeAnnotations = d3.annotation()
+  .annotations(annotations)
+
+svg.append("g")
+   .call(makeAnnotations);
+}
+
 function d3_svg_append_legend(svg, data, color_map) {
   let color_slice = data.slice(0, data.length);
 }
+
