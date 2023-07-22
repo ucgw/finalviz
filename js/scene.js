@@ -88,7 +88,6 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
                     .style("left",(d3.event.pageX+15)+"px")
                     .style("top",(d3.event.pageY-100)+"px")
                     .html(
-                     //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst
                      "Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place
                     )
              })
