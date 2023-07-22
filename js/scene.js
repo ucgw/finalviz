@@ -36,7 +36,7 @@ function d3_svg_select_data_enter(id, xdata, ydata, rdata, width, height, shape)
   let rupper = Math.ceil(Math.max(...rdata)) + 1;
 
   var svg = d3.select("#"+id)
-              .attr("style", "background-color:#cfcfcf")
+              .attr("style", "background-color:#dadada")
               .attr("width", (width + margin.left + margin.right))
               .attr("height", (height + margin.bottom + margin.top));
 
@@ -170,6 +170,15 @@ function d3_append_magError_annotation(svg) {
 
 const makeAnnotations = d3.annotation()
   .annotations(annotations)
+  .on("subjectover", function(a) {
+       this.append("text")
+           .attr("class", "clickhelp")
+           .text("Click to Expand View");
+       })
+  .on("subjectout", function(a) {
+       this.selectAll("text.clickhelp")
+           .remove();
+       });
 
 svg.append("g")
    .call(makeAnnotations);

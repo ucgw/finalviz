@@ -26,7 +26,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
 
             d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
 
-            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Seismic Stations Measuring Magnitude)');
+            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'Magnitude NST (# Stations Measuring Magnitude)');
 
             d3_append_magError_annotation(scatter.svg);
             break;
@@ -43,7 +43,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
 
             d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
 
-            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'NST (# Seismic Stations Measuring Location)');
+            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'NST (# Stations Measuring Location)');
             break;
 
           case "horizontalError":
@@ -58,7 +58,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
 
             d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
 
-            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'NST (# Seismic Stations Measuring Location)');
+            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'NST (# Stations Measuring Location)');
             break;
         }
 
