@@ -210,7 +210,7 @@ function d3_append_magError_annotation(scatter, data, yaxfield, cxfield, cyfield
    ****/
 
 let title = "High Error Region (Low Magnitude Events)";
-let label = "A clustering of high error events at lower magnitude / lower number of recording stations";
+let label = "A clustering of high error events at lower magnitude / lower number measuring stations";
 
 const annotations = d3_magError_annotation_gen(title, label);
 
