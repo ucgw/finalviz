@@ -85,8 +85,7 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
        .attr("cy", function(d,i) { return yscale(cy[i]); })
        .attr("r", function(d,i) { return rscale(r[i]); })
        .attr("class", function(d,i) { return "circle"+i; })
-       .style("opacity", 0.7)
-       .style("fill", function(d,i) { return color[i]; })
+       .style("opacity", 0)
        .on("mouseover", function(d,i) {
              tooltip.style("opacity", .7)
                     .style("left",(d3.event.pageX+15)+"px")
@@ -99,6 +98,13 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
        .on("mouseout", function(d,i) {
              tooltip.style("opacity", 0);
              });
+
+  chart.selectAll("circle")
+       .transition(250)
+         .style("fill", function(d,i) { return color[i]; })
+       .transition()
+         .style("opacity", .7)
+         .ease(d3.easeLinear)
 }
 
 function d3_append_axis_label(svg, axis, xdim, ydim, text) {
