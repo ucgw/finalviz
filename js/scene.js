@@ -77,6 +77,10 @@ function d3_html_tooltip_magError(datarec) {
   return "Mag: "+datarec.mag+"<br>"+"MagError: "+datarec.magError+"<br>"+"MagNst: "+datarec.magNst+"<br>"+"Date: "+datarec.time.replace(/Z/gm, "").replace(/T/gm, " ").replace(/\.\d+$/gm, " (UTC)")+"<br>"+"Location: "+datarec.place;
 }
 
+function d3_html_tooltip_depthError(datarec) {
+  return "Depth: "+datarec.depth+"<br>"+"DepthError: "+datarec.depthError+"<br>"+"Nst: "+datarec.nst+"<br>"+"Date: "+datarec.time.replace(/Z/gm, "").replace(/T/gm, " ").replace(/\.\d+$/gm, " (UTC)")+"<br>"+"Location: "+datarec.place;
+}
+
 function d3_html_tooltip_cx_cy_debug(elem, datarec, tooltip_callback) {
   var html = tooltip_callback(datarec);
   return html+"<br>"+"cx: "+elem.attributes.cx.value+"<br>"+"cy: "+elem.attributes.cy.value;
@@ -101,8 +105,8 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
                     .style("top",(d3.event.pageY-100)+"px")
                     .html(
                       // DEBUG
-                      //d3_html_tooltip_cx_cy_debug(this, data[i], tooltip_callback)
-                      tooltip_callback(data[i])
+                      d3_html_tooltip_cx_cy_debug(this, data[i], tooltip_callback)
+                      //tooltip_callback(data[i])
                     )
              })
        .on("mouseout", function(d,i) {
@@ -185,7 +189,6 @@ return [
   }
 ]
 }
-
 
 function d3_append_magError_return_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
   let title = "Click Here to Go Back";

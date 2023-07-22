@@ -33,18 +33,13 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             break;
 
           case "depthError":
-            raderr_sized = scatterplot_deptherror_calc(cx, cy, errmultiplier);
-            scatter = d3_svg_select_data_enter(cyfield, cx, yax, raderr_sized, canvas_width, canvas_height, "circle");
-            xa_ticks = axis_ticks_gap_calc(cx, xa_numticks);
-            ya_ticks = axis_ticks_gap_calc(yax, xa_tickgap)
+            var d3obj = d3_svg_depthError_setup(cyfield, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+            scatter = d3obj.scatter;
+            raderr_sized = d3obj.raderr_sized;
+            cx = d3obj.cx;
+            yax = d3obj.yax;
+            tooltip_callback = d3_html_tooltip_depthError;
 
-            d3_append_axis(scatter.svg, d3.axisBottom, scatter.xscale, scatter.margin.left, (canvas_height - scatter.margin.bottom), xa_ticks, '~s');
-
-            d3_append_axis_label(scatter.svg, 'x', canvas_width/2, (canvas_height - scatter.margin.bottom + scatter.margin.label), 'Earthquake Depth  (in km <100km)');
-
-            d3_append_axis(scatter.svg, d3.axisLeft, scatter.yscale, scatter.margin.left, scatter.margin.top, ya_ticks, '~s');
-
-            d3_append_axis_label(scatter.svg, 'y', -(scatter.margin.top + (canvas_height/3)), (scatter.margin.left - scatter.margin.label-10),'NST (# Stations Measuring Location)');
             break;
 
           case "horizontalError":
