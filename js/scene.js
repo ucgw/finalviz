@@ -92,7 +92,7 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
                     .style("top",(d3.event.pageY-100)+"px")
                     .html(
                      //"Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place+"<br>"+"cx: "+this.attributes.cx.value+"<br>"+"cy: "+this.attributes.cy.value
-                     "Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Location: "+data[i].place
+                     "Mag: "+data[i].mag+"<br>"+"MagError: "+data[i].magError+"<br>"+"MagNst: "+data[i].magNst+"<br>"+"Date: "+data[i].time.replace(/Z|\.\d+$/gm, "").replace(/T/gm, " ").replace(/$/gm, " (UTC)")+"<br>"+"Location: "+data[i].place
                     )
              })
        .on("mouseout", function(d,i) {
