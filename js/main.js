@@ -40,6 +40,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             yax = d3obj.yax;
             tooltip_callback = d3_html_tooltip_depthError;
 
+            d3_append_depthError_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
             break;
 
           case "horizontalError":
