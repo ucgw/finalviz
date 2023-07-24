@@ -2,6 +2,7 @@
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js'></script>
 <script src='js/util.js'></script>
+<script src='js/annotation.js'></script>
 <script src='js/scene.js'></script>
 <script src='js/main.js'></script>
 <style> circle {fill: lightblue; stroke: black;} </style>
@@ -24,7 +25,6 @@ text.clickhelp {
 <title>Magnitude 6+ EarhquakeError Charts</title>
 <body>
 <svg id="magError"></svg>
-<svg id="horizontalError"></svg>
 <svg id="depthError"></svg>
 <svg id="expandView"></svg>
 <script>
@@ -42,7 +42,9 @@ const cdata_prom = read_chart_data();
 
 make_scatterplot(cdata_prom, "magNst", "mag", "magError", 900, 900, true, true, 5, 25, 1.0, 8.5);
 
+/** NOT USING Ran out of time **/
 //make_scatterplot(cdata_prom, "nst", "gap", "horizontalError", 900, 900, true, true, 50, 45, 1.0, 10.5);
+/** NOT USING Ran out of time **/
 
 //make_scatterplot(cdata_prom, "nst", "depth", "depthError", 900, 900, true, true, 20, 40, 1.0, 10.5);
 
