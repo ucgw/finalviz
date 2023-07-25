@@ -21,12 +21,56 @@ text.clickhelp {
   opacity: .7;
   font-weight: bold;
 }
+
+text.legend-top {
+  position: absolute;
+  font-size: .8em;
+  text-shadow: 1px 1px;
+  text-decoration-line: overline;
+  text-decoration-color: #010005;
+  fill: #010005;
+  opacity: .6;
+  font-weight: bold;
+}
+
+text.legend-bottom {
+  position: absolute;
+  font-size: .8em;
+  text-shadow: 1px 1px;
+  text-decoration-line: underline;
+  text-decoration-color: #010005;
+  fill: #010005;
+  opacity: .6;
+  font-weight: bold;
+}
+
+text.legend-title {
+  position: absolute;
+  font-size: .95em;
+  text-decoration-line: underline;
+  text-decoration-color: #010005;
+  text-decoration-style: double;
+  fill: #000000;
+  opacity: .9;
+  font-weight: bold;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-width: 113px 20px 0 20px;
+  border-color: #3D3131 transparent transparent transparent;
+  border-style: solid;
+  filter: drop-shadow(5px 5px 1px #A3A3A3);
+}
+
 </style>
 <title>Magnitude 6+ EarhquakeError Charts</title>
 <body>
 <svg id="magError"></svg>
 <svg id="depthError"></svg>
 <svg id="expandView"></svg>
+<div id="downarrow"></div>
 <script>
 /******************************
   CTRL-SHIFT-R to force reload
@@ -41,10 +85,6 @@ const cdata_prom = read_chart_data();
 //log_promise_data(cdata_prom);
 
 make_scatterplot(cdata_prom, "magNst", "mag", "magError", 900, 900, true, true, 5, 25, 1.0, 8.5);
-
-/** NOT USING Ran out of time **/
-//make_scatterplot(cdata_prom, "nst", "gap", "horizontalError", 900, 900, true, true, 50, 45, 1.0, 10.5);
-/** NOT USING Ran out of time **/
 
 //make_scatterplot(cdata_prom, "nst", "depth", "depthError", 900, 900, true, true, 20, 40, 1.0, 10.5);
 

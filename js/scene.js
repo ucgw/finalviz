@@ -184,6 +184,79 @@ function d3_append_axis(svg, atype, ascale, width, height, xt, tformat) {
 }
 
 function d3_svg_append_legend(svg, data, color_map) {
-  let color_slice = data.slice(0, data.length);
-}
+  let color_chunk = color_map.slice(0, data.length);
 
+  let lingrad = svg.append("defs")
+                   .append("linearGradient")
+                   .attr("id", "lingrad-legend");
+
+  // setting up a vertical gradient legend
+  lingrad.attr("x1", "0%")
+         .attr("y1", "0%")
+         .attr("x2", "0%")
+         .attr("y2", "100%");
+
+  /***
+   * again, just hacked the numbers in for the gradient
+   * start and stop colors because, I am not using a standard
+   * gradient scale for the data points
+  ***/
+  lingrad.append("stop")
+         .attr("offset", "0%")
+         .attr("stop-color", color_chunk[1]);
+
+  lingrad.append("stop")
+         .attr("offset", "100%")
+         .attr("stop-color", color_chunk[80]);
+
+  svg.append("rect")
+     .attr("width", 20)
+     .attr("height", 110)
+     .attr("x", 820)
+     .attr("y", 670)
+     .attr("rx", 10)
+     .attr("ry", 10)
+     .style("border", "10px solid black")
+     .style("stroke", "black")
+     .style("stroke-width", "2")
+     .style("fill", "url(#lingrad-legend)");
+
+  svg.append("text")
+     .attr("x", 845)
+     .attr("y", 685)
+     .attr("class", "legend-top")
+     .html("Greater");
+
+  svg.append("text")
+     .attr("x", 849)
+     .attr("y", 775)
+     .attr("class", "legend-bottom")
+     .html("Lesser");
+
+  svg.append("text")
+     .attr("x", 720)
+     .attr("y", 645)
+     .attr("class", "legend-title")
+     .html("(Error vs. Actual) Ratio Color Map")
+
+  svg.append("rect")
+     .attr("x", 800)
+     .attr("y", 655)
+     .attr("width", 110)
+     .attr("height", 135)
+     .attr("fill", "none")
+     .attr("stroke", "black")
+     .attr("stroke-width", "1px")
+
+  svg.append("path")
+     .attr("d", "m 905 695 l -30 30 l -30 -30 z")
+     .attr("class", "triangle")
+
+  svg.append("path")
+     .attr("d", "m 895 725 l -20 20 l -20 -20 z")
+     .attr("class", "triangle")
+
+  svg.append("path")
+     .attr("d", "m 890 745 l -15 15 l -15 -15 z")
+     .attr("class", "triangle")
+}
