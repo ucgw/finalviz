@@ -34,6 +34,8 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             d3_append_depthError_consistent10km_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
 
              d3_append_depthError_pre1960_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+             d3_append_depthError_higherNst_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
             d3_svg_append_legend(scatter.svg, data, scatter.color_map);
             break;
         }
