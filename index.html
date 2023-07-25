@@ -81,13 +81,24 @@ text.legend-title {
 //console.log(this);
 
 const cdata_prom = read_chart_data();
-
 //log_promise_data(cdata_prom);
 
-make_scatterplot(cdata_prom, "magNst", "mag", "magError", 900, 900, true, true, 5, 25, 1.0, 8.5);
+function magErrorPlot() {
+  make_scatterplot(cdata_prom, "magNst", "mag", "magError", 900, 900, true, true, 5, 25, 1.0, 8.5);
+}
 
-//make_scatterplot(cdata_prom, "nst", "depth", "depthError", 900, 900, true, true, 20, 40, 1.0, 10.5);
+function depthErrorPlot() {
+  make_scatterplot(cdata_prom, "nst", "depth", "depthError", 900, 900, true, true, 20, 40, 1.0, 10.5);
+}
 
+magErrorPlot();
+//depthErrorPlot();
 </script>
+
+<!--
+<button onclick="magErrorPlot()">Magnitude ErrorPlot</button>
+<button onclick="depthErrorPlot()">Depth ErrorPlot</button>
+-->
+
 </body>
 </html>

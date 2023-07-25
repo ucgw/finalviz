@@ -20,6 +20,9 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
             tooltip_callback = d3_html_tooltip_magError;
 
             d3_append_magError_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+            d3_append_magError_higherMagNst_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
             d3_svg_append_legend(scatter.svg, data, scatter.color_map);
             break;
 

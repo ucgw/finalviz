@@ -106,6 +106,33 @@ return [
 ]
 }
 
+function d3_magError_higherMagNst_annotation_gen(title, label) {
+return [
+  {
+    note: {
+      label: label,
+      title: title,
+      align: "right",
+      lineType: "horizontal"
+    },
+    type: d3.annotationCalloutRect,
+    subject: {
+      width: 280,
+      height: 400
+    },
+    connector: {
+      //end: "arrow",
+      //endScale: 2
+    },
+    color: ["#010005"],
+    x: 345,
+    y:  400,
+    dy: -5,
+    dx: 470
+  }
+]
+}
+
 function d3_append_depthError_higherNst_return_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
   let title = "Click Here to Go Back";
   let label = "";
@@ -198,6 +225,34 @@ function d3_append_depthError_consistent10km_return_annotation(scatter, data, ya
      .call(makeAnnotations);
 }
 
+function d3_magError_higherMagNst_return_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
+  let title = "Click Here to Go Back";
+  let label = "";
+
+  var annotations = d3_magError_higherMagNst_annotation_gen(title, label);
+
+  const makeAnnotations = d3.annotation()
+        .annotations(annotations)
+        .disable(["subject", "connector"])
+        .on("noteclick", function(a) {
+             // clear expandView svg to revert back to
+             // original view
+             scatter.svg.remove();
+
+             var d3obj = d3_svg_magError_setup("magError", data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+             d3_append_magError_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+             d3_append_magError_higherMagNst_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+             d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, data, d3_html_tooltip_detailed);
+             d3_svg_append_legend(d3obj.scatter.svg, data, d3obj.scatter.color_map);
+             });
+
+  scatter.svg.append("g")
+     .call(makeAnnotations);
+}
+
 function d3_append_magError_return_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
   let title = "Click Here to Go Back";
   let label = "";
@@ -215,6 +270,8 @@ function d3_append_magError_return_annotation(scatter, data, yaxfield, cxfield, 
              var d3obj = d3_svg_magError_setup("magError", data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
 
              d3_append_magError_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+             d3_append_magError_higherMagNst_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
 
              d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, data, d3_html_tooltip_detailed);
              d3_svg_append_legend(d3obj.scatter.svg, data, d3obj.scatter.color_map);
@@ -437,6 +494,73 @@ const makeAnnotations = d3.annotation()
 
        var d3obj = d3_svg_depthError_setup("expandView", cdata, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
        d3_append_depthError_consistent10km_return_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+
+       d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, cdata, d3_html_tooltip_detailed);
+       d3_svg_append_legend(d3obj.scatter.svg, data, scatter.color_map);
+       });
+
+scatter.svg.append("g")
+   .call(makeAnnotations);
+}
+
+function d3_append_magError_higherMagNst_annotation(scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier) {
+  /****
+   * Annotation specific for the magError scene
+   * with static data
+   ****/
+
+let title = "Sparse Low Error Region";
+let label = "sparsely distributed low error earthquake events w/ high measuring station counts.";
+
+const annotations = d3_magError_higherMagNst_annotation_gen(title, label);
+
+const makeAnnotations = d3.annotation()
+  .annotations(annotations)
+  .on("subjectover", function(a) {
+       this.append("text")
+           .attr("class", "clickhelp")
+           .text("Click to Expand View");
+       })
+  .on("subjectout", function(a) {
+       this.selectAll("text.clickhelp")
+           .remove();
+       })
+  .on("subjectclick", function(a) {
+       var cdata = [];
+       let enclosed_x = 237;
+       let enclosed_y = 290;
+       //console.log(a);
+       //console.log("==========");
+       //console.log(scatter.svg.selectAll("circle"));
+
+       let circles = scatter.svg.selectAll("circle")._groups[0];
+
+       console.log(scatter.svg);
+
+       // anything less than or equal to _y AND
+       // anything less than or equal to _x
+       // we target for expansion view
+       for (let i = 0; i < circles.length; i++) {
+           let curr_cx = circles[i].attributes.cx.value;
+           let curr_cy = circles[i].attributes.cy.value;
+
+           if (curr_cx > enclosed_x && curr_cy > enclosed_y) {
+               console.log("cx: "+curr_cx+"  cy: "+curr_cy + "  MagError: "+data[i].magError+"  Mag: "+data[i].mag);
+               cdata.push(data[i]);
+           } else {
+               // DO NOT USE FOR NOW
+               //scatter.svg.select(".circle"+i).remove();
+           }
+       }
+
+       console.log(cdata.length);
+
+       // clear main magError scene to "expand"
+       // the d3 annotation subject section data points
+       scatter.svg.remove();
+
+       var d3obj = d3_svg_magError_setup("expandView", cdata, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
+       d3_magError_higherMagNst_return_annotation(d3obj.scatter, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
 
        d3_append_circles(d3obj.scatter.chart, d3obj.cx, d3obj.scatter.xscale, d3obj.yax, d3obj.scatter.yscale, d3obj.raderr_sized, d3obj.scatter.rscale, d3obj.scatter.color_map, cdata, d3_html_tooltip_detailed);
        d3_svg_append_legend(d3obj.scatter.svg, data, scatter.color_map);
