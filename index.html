@@ -1,4 +1,6 @@
 <html>
+<head>
+
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js'></script>
 <script src='js/util.js'></script>
@@ -64,13 +66,91 @@ text.legend-title {
   filter: drop-shadow(5px 5px 1px #A3A3A3);
 }
 
+h1, h2 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 550;
+  font-style: normal;
+  color: DarkSlateGray;
+  text-align: center;
+  column-span: all;
+}
+
+figure {
+  display: table;
+  border: 1px #cccccc solid;
+  padding: 4px;
+  margin: auto;
+}
+
+figcaption {
+  display: table-caption;
+  caption-side: bottom;
+  background-color: #76b7b2;
+  color: black;
+  font-style: italic;
+  padding: 4px;
+  text-align: center;
+}
+
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px !important;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 40px;
+}
+
+@media screen and (max-height: 455px) {
+  .sidenav {padding-top: 10px;}
+  .sidenav a {font-size: 28px;}
+}
+
 </style>
-<title>Magnitude 6+ EarhquakeError Charts</title>
+</head>
+<!--
+ Main Page format taken from various templates at:
+   https://www.w3schools.com/
+-->
+<title>Magnitude 6Plus Earthquake Error Charts</title>
 <body>
 <svg id="magError"></svg>
 <svg id="depthError"></svg>
 <svg id="expandView"></svg>
-<div id="downarrow"></div>
 <script>
 /******************************
   CTRL-SHIFT-R to force reload
@@ -91,14 +171,22 @@ function depthErrorPlot() {
   make_scatterplot(cdata_prom, "nst", "depth", "depthError", 900, 900, true, true, 20, 40, 1.0, 10.5);
 }
 
-magErrorPlot();
-//depthErrorPlot();
 </script>
 
-<!--
-<button onclick="magErrorPlot()">Magnitude ErrorPlot</button>
-<button onclick="depthErrorPlot()">Depth ErrorPlot</button>
--->
+<div id="sidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a class="active" href="index.html">Home</a>
+  <a href="javascript:void(0);" onclick="magErrorPlot();">Magnitude Error Chart</a>
+  <a href="javascript:void(0);" onclick="depthErrorPlot();">Depth Error Chart</a>
+</div>
+
+<div id="main">
+  <p>         </p>
+  <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Main Menu</span>
+</div>
+
+  <h2>SideBar Test</h2>
+  <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
 
 </body>
 </html>

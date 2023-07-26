@@ -9,6 +9,8 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
         var yax = [];
         var tooltip_callback = {};
 
+        d3.selectAll("svg").remove();
+
         switch (cyfield) {
           case "magError":
             var d3obj = d3_svg_magError_setup(cyfield, data, yaxfield, cxfield, cyfield, canvas_width, canvas_height, downsize, logscale, xa_numticks, xa_tickgap, yaxmultiplier, errmultiplier);
@@ -44,5 +46,7 @@ function make_scatterplot(promise_data, yaxfield, cxfield, cyfield, canvas_width
         }
 
         d3_append_circles(scatter.chart, cx, scatter.xscale, yax, scatter.yscale, raderr_sized, scatter.rscale, scatter.color_map, data, tooltip_callback);
+
+        closeNav();
     });
 }

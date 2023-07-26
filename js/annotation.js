@@ -137,8 +137,6 @@ function d3_append_depthError_higherNst_return_annotation(scatter, data, yaxfiel
   let title = "Click Here to Go Back";
   let label = "";
 
-
-
   var annotations = d3_depthError_higherNst_annotation_gen(title, label);
 
   const makeAnnotations = d3.annotation()
@@ -289,7 +287,7 @@ function d3_append_depthError_higherNst_annotation(scatter, data, yaxfield, cxfi
    ****/
 
 let title = "Sparse Low Error Region";
-let label = "sparsely distributed low error events w/ high measuring station counts";
+let label = "low error events w/ high measuring station counts";
 
 const annotations = d3_depthError_higherNst_annotation_gen(title, label);
 
