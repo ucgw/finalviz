@@ -68,11 +68,17 @@ text.legend-title {
 
 h1, h2, h3 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 550;
+  font-weight: 550 !important;
   font-style: normal;
   color: DarkSlateGray;
   text-align: center;
   column-span: all;
+}
+
+h2.conclusion {
+  color: #e41a1c !important;
+  font-weight: 900 !important;
+  font-size: 30px !important;
 }
 
 figure {
@@ -219,22 +225,22 @@ function depthErrorPlot() {
   Assembled are 2 charts with multiple drill down scenes revealing both high and low density events around error ratios for both magitude and depth of major earthquakes (6+ magnitude). The data covers the last 5 years, but a few events from very early on when recording stations were being first deployed helps to draw the intended correlations between number of recording stations and the error to actual value ratios of each event.
 </div>
 <br>
+  <h2 class="conclusion">More Recording Stations => Less Relative Error</h2>
+  <h1></h1>
+  <h1></h1>
 <br>
-<br>
-  <div class="wrapper">
-    <figure>
-      <img id="magfig" src="images/magErrorPlot.png"/>
-      <figcaption>Magnitude Error Ratios Chart</figcaption>
+  <div id="chartimgs" class="wrapper">
+    <figure id="magfig">
+      <img id="magimg" src="images/magErrorPlot.png"/>
+      <figcaption>Magnitude Error Chart</figcaption>
     </figure>
-    <figure>
-      <img id="depfig" src="images/depthErrorPlot.png"/>
-      <figcaption>Depth Error Ratios Chart</figcaption>
+    <figure id="depfig">
+      <img id="depimg" src="images/depthErrorPlot.png"/>
+      <figcaption>Depth Error Chart</figcaption>
     </figure>
   </div>
 <div class="twocolumn">
 </div>
-
-<script>revealFigs()</script>
 
 </body>
 </html>
