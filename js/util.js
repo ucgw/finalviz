@@ -186,6 +186,22 @@ function d3_svg_depthError_setup(svgid, data, yaxfield, cxfield, cyfield, canvas
   return { scatter, raderr_sized, cx, yax };
 }
 
+function revealFigs() {
+  let depfig = document.getElementById("depfig");
+  let magfig = document.getElementById("magfig");
+
+  depfig.removeAttribute("hidden");
+  magfig.removeAttribute("hidden");
+}
+
+function hideFigs() {
+  let depfig = document.getElementById("depfig");
+  let magfig = document.getElementById("magfig");
+
+  depfig.setAttribute("hidden", "hidden");
+  magfig.setAttribute("hidden", "hidden");
+}
+
 function openNav() {
   document.getElementById("sidenav").style.width = "250px";
   document.getElementById("main").style.marginLeft = "250px";

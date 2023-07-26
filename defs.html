@@ -1,0 +1,67 @@
+<html>
+<style>
+td
+{
+    padding:0 20px 0 30px;
+}
+</style>
+<table>
+    <tr>
+      <td><u>FIELD_NAME</u></td>
+      <td><u>VALUE_TYPE</u></td>
+      <td><u>DESCRIPTION</u></td>
+    </tr>
+    <tr>
+        <td>id</td>
+        <td>String</td>
+        <td>A unique identifier for the event</td>
+    </tr>
+    <tr>
+        <td>magError</td>
+        <td>Decimal</td>
+        <td>Uncertainty of reported magnitude of the event. estimated standard error of magnitude</td>
+    </tr>
+    <tr>
+        <td>magNst</td>
+        <td>Integer</td>
+        <td>Total number of seismic stations used to calculate the magnitude for this earthquake
+</td>
+    </tr>
+    <tr>
+        <td>mag</td>
+        <td>Decimal</td>
+        <td>The magnitude for the event.</td>
+    </tr>
+    <tr>
+        <td>depthError</td>
+        <td>Decimal</td>
+        <td>Uncertainty of reported event (in km.)</td>
+    </tr>
+    <tr>
+        <td>depth</td>
+        <td>Decimal</td>
+        <td>Depth of event (in km.)</td>
+    </tr>
+    <tr>
+        <td>nst</td>
+        <td>Integer</td>
+        <td>Total number of seismic stations used to determine earthquake location</td>
+    </tr>
+    <tr>
+        <td>Date/Time</td>
+        <td>Date Time</td>
+        <td>Time when event occurred (in UTC)</td>
+    </tr>
+    <tr>
+        <td>place</td>
+        <td>String</td>
+        <td>Textual description of named geographic region near to the event</td>
+    </tr>
+</table>
+<br>
+   <body>
+      <form action="index.html">
+         <button type="submit">Main Page</button>
+      </form>
+   </body>
+</html>

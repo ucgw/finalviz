@@ -66,7 +66,7 @@ text.legend-title {
   filter: drop-shadow(5px 5px 1px #A3A3A3);
 }
 
-h1, h2 {
+h1, h2, h3 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 550;
   font-style: normal;
@@ -140,10 +140,34 @@ body {
   .sidenav a {font-size: 28px;}
 }
 
+.twocolumn {
+  column-count: 2;
+  column-gap: 40px;
+  column-width: 50px;
+  max-width: 550px;
+  width: max-content;
+  margin: auto;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: #ededed;
+}
+
+.wrapper img {
+  border: 5px solid #555;
+  border-radius: 10px;
+  padding: 5px;
+  width: 150px;
+}
+
 </style>
 </head>
 <!--
- Main Page format taken from various templates at:
+ Main Page formatting taken from various templates at:
    https://www.w3schools.com/
 -->
 <title>Magnitude 6Plus Earthquake Error Charts</title>
@@ -178,15 +202,38 @@ function depthErrorPlot() {
   <a class="active" href="index.html">Home</a>
   <a href="javascript:void(0);" onclick="magErrorPlot();">Magnitude Error Chart</a>
   <a href="javascript:void(0);" onclick="depthErrorPlot();">Depth Error Chart</a>
+  <a href="defs.html">Field Definitions</a>
 </div>
 
 <div id="main">
   <p>         </p>
-  <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Main Menu</span>
+  <span style="font-size:30px;cursor:pointer" onclick="openNav();hideFigs();">&#9776; Main Menu</span>
+</div>
+  <h2>Recording Station Counts' Effect on Error Ratios</h2>
+  <div class="twocolumn">
+  Earthquake magnitudes and depth measurments have been tracked for nearly 100 years in order to help us understand past trends that lead to future enhancements in early detection systems. However, just as important as the measure itself is the error rates associated.
+  </div>
+<br>
+  <div class="twocolumn">
+  Assembled are 2 charts with multiple drill down scenes revealing both high and low density events around error ratios for both magitude and depth of major earthquakes (6+ magnitude). The data covers the last 5 years, but a few events from very early on when recording stations were being first deployed helps to draw the intended correlations between number of recording stations and the error to actual value ratios of each event.
+</div>
+<br>
+<br>
+<br>
+  <div class="wrapper">
+    <figure>
+      <img id="magfig" src="images/magErrorPlot.png"/>
+      <figcaption>Magnitude Error Ratios Chart</figcaption>
+    </figure>
+    <figure>
+      <img id="depfig" src="images/depthErrorPlot.png"/>
+      <figcaption>Depth Error Ratios Chart</figcaption>
+    </figure>
+  </div>
+<div class="twocolumn">
 </div>
 
-  <h2>SideBar Test</h2>
-  <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
+<script>revealFigs()</script>
 
 </body>
 </html>
