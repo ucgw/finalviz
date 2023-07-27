@@ -134,7 +134,7 @@ function d3_append_circles(chart, cx, xscale, cy, yscale, r, rscale, color, data
              });
 
   chart.selectAll("circle")
-       .transition(300)
+       .transition(500)
          .style("fill", function(d,i) { return color[i]; })
        .transition()
          .style("opacity", .7)
